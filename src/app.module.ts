@@ -7,8 +7,8 @@ import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [ConfigModule.forRoot(),
-    MongooseModule.forRoot('mongodb://db_mongo/api-bank'),
-    AuthModule],
+            MongooseModule.forRoot('mongodb://localhost:27017/api-bank'),
+            AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })
