@@ -6,6 +6,8 @@ import { JwtStrategy } from "./jwt.strategy";
 import {JwtModule} from '@nestjs/jwt';
 import {PassportModule} from '@nestjs/passport';
 import { jwtConstants } from "./constants";
+import { AccountModule } from "../accounts/accounts.module";
+import { AccountService } from "../accounts/accounts.service";
 
 @Module({
   imports:[
