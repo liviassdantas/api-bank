@@ -2,6 +2,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: 'tsconfig.json',
+    tsconfigRootDir: '/home/Livia/Documentos/Git/Estudos/api-bank/api-bank',
     sourceType: 'module',
   },
   plugins: ['@typescript-eslint/eslint-plugin'],

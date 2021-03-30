@@ -9,9 +9,9 @@ export class ValidateSecurity {
   }
 
   public static async comparePassword(
-    password: String,
-    hash: String,
-  ): Promise<Boolean> {
+    password: string,
+    hash: string,
+  ): Promise<boolean> {
     return await bcrypt.compare(password, hash.toString());
   }
 }

@@ -5,18 +5,17 @@ export type AccountDocument = Account & Document;
 
 @Schema()
 export class Account {
-    @Prop({ required: true })
-    name: string
+  @Prop({ required: true })
+  name: string;
 
-    @Prop({ required: true })
-    password: string;
+  @Prop({ required: true })
+  password: string;
 
-    @Prop({ required: true })
-    email: string;
+  @Prop({ required: true })
+  email: string;
 
-    @Prop()
-    accountBalance: number;
-
+  @Prop()
+  accountBalance: number;
 }
 
-export let AccountSchema = SchemaFactory.createForClass(Account);
+export const AccountSchema = SchemaFactory.createForClass(Account);
