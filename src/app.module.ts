@@ -1,3 +1,4 @@
+import { TransfersModule } from './transfers/transfers.module';
 import { TransfersController } from './transfers/transfers.controller';
 import { TransfersService } from './transfers/transfers.service';
 import { Module } from '@nestjs/common';
@@ -10,6 +11,7 @@ import { AccountModule } from './accounts/accounts.module';
 
 @Module({
   imports: [
+    TransfersModule,
     ConfigModule.forRoot(),
     MongooseModule.forRoot('mongodb://localhost:27017/api-bank'),
     AuthModule,
