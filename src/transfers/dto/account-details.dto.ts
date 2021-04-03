@@ -8,7 +8,7 @@ import {
 } from 'class-validator';
 import { Date } from 'mongoose';
 
-export class BankStatementDto {
+export class AccountDetailsDto {
   @ApiProperty()
   @IsString()
   id: string;

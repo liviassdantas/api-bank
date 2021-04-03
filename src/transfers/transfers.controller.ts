@@ -1,4 +1,12 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
+import { TransfersService } from './transfers.service';
 
-@Controller()
-export class TransfersController {}
+@Controller('transfers')
+export class TransfersController {
+  constructor(private transferService: TransfersService) {}
+
+//   @Get()
+//   async requestBankStatement(){
+//       return 
+//   }
+}
