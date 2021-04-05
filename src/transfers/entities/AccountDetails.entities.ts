@@ -1,4 +1,4 @@
-import { Date, Document } from 'mongoose';
+import { Document } from 'mongoose';
 
 export class AccountDetails extends Document {
   id: string;
