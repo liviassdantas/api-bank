@@ -1,6 +1,4 @@
 import { TransfersModule } from './transfers/transfers.module';
-import { TransfersController } from './transfers/transfers.controller';
-import { TransfersService } from './transfers/transfers.service';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -17,7 +15,7 @@ import { AccountModule } from './accounts/accounts.module';
     AuthModule,
     AccountModule,
   ],
-  controllers: [TransfersController, AppController],
-  providers: [TransfersService, AppService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

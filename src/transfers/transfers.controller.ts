@@ -1,5 +1,5 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { Controller, Get, UseGuards, Request } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { TransfersService } from './transfers.service';
 
 @Controller('transfers')
@@ -7,8 +7,15 @@ export class TransfersController {
   constructor(private transferService: TransfersService) {}
 
   @UseGuards(JwtAuthGuard)
-  @Get('/:user/:starDate/:endDate')
-  async requestBankStatement(user: string, startDate: Date, endDate: Date) {
-    return this.transferService.getBankStatement(user, startDate, endDate);
+  @Get('/:starDate/:endDate')
+  async requestBankStatement(
+    @Request() req: any,
+    startDate: string,
+    endDate: string,
+  ) {
+    return this.transferService.getBankStatement(req, startDate, endDate);
   }
+
+  // @Post()
+  // async makeTransfer(target_email, amount)
 }
