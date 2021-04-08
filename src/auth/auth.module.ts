@@ -1,4 +1,4 @@
-import { Injectable, Module } from '@nestjs/common';
+import { forwardRef, Injectable, Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalStrategy } from './local.strategy';
 import { AuthController } from './auth.controller';
@@ -10,7 +10,7 @@ import { AccountModule } from '../accounts/accounts.module';
 
 @Module({
   imports: [
-    AccountModule,
+    forwardRef(() => AccountModule),
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
@@ -21,5 +21,4 @@ import { AccountModule } from '../accounts/accounts.module';
   providers: [AuthService, LocalStrategy, JwtStrategy],
   exports: [AuthService],
 })
-@Injectable()
 export class AuthModule {}

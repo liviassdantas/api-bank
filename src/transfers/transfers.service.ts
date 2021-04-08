@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { AuthService } from '../auth/auth.service';
+import { AccountService } from '../accounts/accounts.service';
 import { AccountDetails } from '../transfers/entities/AccountDetails.entities';
 
 @Injectable()
@@ -9,16 +9,15 @@ export class TransfersService {
   constructor(
     @InjectModel('AccountDetails')
     private readonly accountDetailsModel: Model<AccountDetails>,
-    private readonly authService: AuthService,
+    private readonly accountService: AccountService,
   ) {}
 
   async getBankStatement(req, startDate: string, endDate: string) {
     const startDateParse = new Date(startDate);
     const endDateParse = new Date(endDate);
-    console.log('req value headers', req.headers);
-    const user = await this.authService.getIdByToken(req.headers.authorization);
+    const userEmail = this.accountService.getLoggedUser(req);
     const totalStatement = await this.accountDetailsModel.find({
-      _id: user.id,
+      email: userEmail,
     });
     console.log('email decoded:', totalStatement);
     const bankStatementPeriod = Array<AccountDetails>();

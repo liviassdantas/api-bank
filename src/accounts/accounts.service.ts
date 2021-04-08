@@ -4,11 +4,14 @@ import { Model } from 'mongoose';
 import { Account } from '../accounts/entities/Account';
 import { CreateAccountsDto } from '../accounts/dto/create-accounts.dto';
 import { ValidateSecurity } from '../utils/security.util';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class AccountService {
   constructor(
-    @InjectModel('Account') private readonly accountmodel: Model<Account>,
+    @InjectModel('Account')
+    private readonly accountmodel: Model<Account>,
+    private readonly authService: AuthService,
   ) {}
 
   async create(createAccountsDto: CreateAccountsDto): Promise<any> {
@@ -44,5 +47,19 @@ export class AccountService {
 
   async findByEmail(email: string): Promise<Account> {
     return await this.accountmodel.findOne({ email });
+  }
+
+  async findByID(id: string): Promise<Account> {
+    return await this.accountmodel.findOne({ id });
+  }
+
+  async getLoggedUser(req) {
+    console.log('req value headers', req.headers);
+    const userID = await this.authService.getIdByToken(
+      req.headers.authorization,
+    );
+    const { email } = await this.findByID(userID);
+    process.env.LOGGED_USER = email;
+    return email;
   }
 }
