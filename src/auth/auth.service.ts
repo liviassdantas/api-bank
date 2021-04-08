@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AccountService } from '../accounts/accounts.service';
 import { ValidateSecurity } from '../utils/security.util';
@@ -7,8 +7,9 @@ import { jwtConstants } from './constants';
 @Injectable()
 export class AuthService {
   constructor(
-    private jwtService: JwtService,
+    @Inject(forwardRef(() => AccountService))
     private accountService: AccountService,
+    private jwtService: JwtService,
   ) {}
 
   async signin(accountUser: any) {
