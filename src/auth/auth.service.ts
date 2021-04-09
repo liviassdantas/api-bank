@@ -24,14 +24,14 @@ export class AuthService {
     };
   }
 
-  async getIdByToken(token: string) {
+  async getEmailByToken(token: string) {
     const authorization = token.split(' ')[1].toString();
     const verifiedToken = this.jwtService.verify(authorization, {
       secret: jwtConstants.secret,
     });
     console.log('auth', authorization);
     console.log('token id', verifiedToken);
-    return verifiedToken.iat;
+    return verifiedToken.email;
   }
 
   async validateAccount(accountEmail: string, accountPassword: string) {
