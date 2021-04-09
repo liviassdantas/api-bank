@@ -1,4 +1,4 @@
-import { forwardRef, Injectable, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalStrategy } from './local.strategy';
 import { AuthController } from './auth.controller';
@@ -10,7 +10,7 @@ import { AccountModule } from '../accounts/accounts.module';
 
 @Module({
   imports: [
-    forwardRef(() => AccountModule),
+    AccountModule,
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,

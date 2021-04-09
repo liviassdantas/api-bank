@@ -19,6 +19,6 @@ export class AuthController {
     description: 'You have no permission to this action.',
   })
   async signin(@Request() req: any) {
-    return this.authService.signin(req);
+    return this.authService.signin(req.body);
   }
 }

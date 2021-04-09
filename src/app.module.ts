@@ -9,10 +9,10 @@ import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     TransfersModule,
     AuthModule,
     AccountModule,
-    ConfigModule.forRoot(),
     MongooseModule.forRoot('mongodb://localhost:27017/api-bank'),
   ],
   controllers: [AppController],

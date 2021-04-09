@@ -11,7 +11,6 @@ export class AccountService {
   constructor(
     @InjectModel('Account')
     private readonly accountmodel: Model<Account>,
-    private readonly authService: AuthService,
   ) {}
 
   async create(createAccountsDto: CreateAccountsDto): Promise<any> {
@@ -49,17 +48,9 @@ export class AccountService {
     return await this.accountmodel.findOne({ email });
   }
 
-  async findByID(id: string): Promise<Account> {
-    return await this.accountmodel.findOne({ id });
-  }
-
-  async getLoggedUser(req) {
-    console.log('req value headers', req.headers);
-    const userID = await this.authService.getIdByToken(
-      req.headers.authorization,
-    );
-    const { email } = await this.findByID(userID);
-    process.env.LOGGED_USER = email;
+  async findByID(id: string) {
+    console.log('UserID to Find', id);
+    const { email } = await this.accountmodel.findOne({ id });
     return email;
   }
 }

@@ -15,10 +15,8 @@ export class TransfersService {
   async getBankStatement(req, startDate: string, endDate: string) {
     const startDateParse = new Date(startDate);
     const endDateParse = new Date(endDate);
-    const userEmail = this.accountService.getLoggedUser(req);
-    const totalStatement = await this.accountDetailsModel.find({
-      email: userEmail,
-    });
+    const userID = process.env.LOGGED_USER;
+    const totalStatement = await this.accountService.findByID(userID);
     console.log('email decoded:', totalStatement);
     const bankStatementPeriod = Array<AccountDetails>();
     totalStatement.filter(async (detail) => {

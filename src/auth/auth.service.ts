@@ -1,5 +1,6 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { exception } from 'console';
 import { AccountService } from '../accounts/accounts.service';
 import { ValidateSecurity } from '../utils/security.util';
 import { jwtConstants } from './constants';
@@ -7,13 +8,17 @@ import { jwtConstants } from './constants';
 @Injectable()
 export class AuthService {
   constructor(
-    @Inject(forwardRef(() => AccountService))
     private accountService: AccountService,
     private jwtService: JwtService,
   ) {}
 
   async signin(accountUser: any) {
-    const payload = { email: accountUser.email, sub: accountUser._id };
+    const result = await this.validateAccount(
+      accountUser.email,
+      accountUser.password,
+    );
+
+    const payload = { email: result.email, sub: result.id, name: result.name };
     return {
       access_token: this.jwtService.sign(payload),
     };
@@ -31,6 +36,10 @@ export class AuthService {
 
   async validateAccount(accountEmail: string, accountPassword: string) {
     const accountFound = await this.accountService.findByEmail(accountEmail);
+    if (accountFound == null) {
+      throw new InternalServerErrorException('Invalid email or password');
+    }
+
     const passwordChecked = await ValidateSecurity.comparePassword(
       accountPassword,
       accountFound.password,
@@ -40,7 +49,5 @@ export class AuthService {
       const { _id, name, email } = accountFound;
       return { id: _id, name, email };
     }
-
-    return null;
   }
 }
