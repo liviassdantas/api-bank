@@ -4,7 +4,6 @@ import { Model } from 'mongoose';
 import { Account } from '../accounts/entities/Account';
 import { CreateAccountsDto } from '../accounts/dto/create-accounts.dto';
 import { ValidateSecurity } from '../utils/security.util';
-import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class AccountService {
@@ -45,12 +44,59 @@ export class AccountService {
   }
 
   async findByEmail(email: string): Promise<Account> {
-    return await this.accountmodel.findOne({ email });
+    const user = await this.accountmodel.findOne({ email });
+    return user;
   }
 
   async findByID(id: string) {
-    console.log('UserID to Find', id);
     const { email } = await this.accountmodel.findOne({ id });
     return email;
+  }
+  async verifyBalance(loggedEmail, amount) {
+    const account = await this.findByEmail(loggedEmail);
+
+    if (account.accountBalance > amount) {
+      const newValue = account.accountBalance - amount;
+      await this.accountmodel.updateOne(
+        { email: loggedEmail },
+        { accountBalance: newValue },
+      );
+      return {
+        status: 'ok',
+      };
+    } else {
+      return {
+        message: 'Insufficient funds.',
+      };
+    }
+  }
+  async updateAmount(originEmail, targetEmail, amount) {
+    try {
+      const verifyOriginBalance = await this.verifyBalance(originEmail, amount);
+
+      if (verifyOriginBalance.status == 'ok') {
+        const account = await this.findByEmail(targetEmail);
+
+        const newValue = account.accountBalance + amount;
+        await this.accountmodel.updateOne(
+          { email: targetEmail },
+          { accountBalance: newValue },
+        );
+
+        return {
+          status: 'ok',
+        };
+      } else {
+        return {
+          status: 'failed',
+          message: verifyOriginBalance.message,
+        };
+      }
+    } catch (exception) {
+      return {
+        status: 'failed',
+        message: exception.message,
+      };
+    }
   }
 }

@@ -1,4 +1,11 @@
-import { Controller, Get, UseGuards, Request } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  UseGuards,
+  Request,
+  Post,
+  Body,
+} from '@nestjs/common';
 import {
   ApiOkResponse,
   ApiTags,
@@ -23,6 +30,13 @@ export class TransfersController {
     return this.transferService.getBankStatement(req);
   }
 
-  // @Post()
-  // async makeTransfer(target_email, amount);
+  @UseGuards(JwtAuthGuard)
+  @Post()
+  async makeTransfer(@Body() body, @Request() req: any) {
+    return this.transferService.realizeTransfer(
+      body.target_email,
+      body.amount,
+      req,
+    );
+  }
 }

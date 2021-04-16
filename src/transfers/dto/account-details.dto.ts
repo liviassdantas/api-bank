@@ -6,7 +6,6 @@ import {
   IsNumber,
   IsDate,
 } from 'class-validator';
-import { Date } from 'mongoose';
 
 export class AccountDetailsDto {
   @ApiProperty()
@@ -33,5 +32,5 @@ export class AccountDetailsDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsDate()
-  created_at: Date;
+  created_at: string;
 }
