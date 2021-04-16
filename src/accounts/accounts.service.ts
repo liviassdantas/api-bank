@@ -48,10 +48,6 @@ export class AccountService {
     return await this.accountmodel.findOne({ email });
   }
 
-  async findAllByEmail(email: string): Promise<Account> {
-    return await this.accountmodel.find({ email });
-  }
-
   async findByID(id: string) {
     console.log('UserID to Find', id);
     const { email } = await this.accountmodel.findOne({ id });

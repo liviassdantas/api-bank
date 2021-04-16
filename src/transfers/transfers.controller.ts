@@ -1,4 +1,9 @@
 import { Controller, Get, UseGuards, Request } from '@nestjs/common';
+import {
+  ApiOkResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { TransfersService } from './transfers.service';
 
@@ -7,15 +12,17 @@ export class TransfersController {
   constructor(private transferService: TransfersService) {}
 
   @UseGuards(JwtAuthGuard)
-  @Get('/:starDate/:endDate')
-  async requestBankStatement(
-    @Request() req: any,
-    startDate: string,
-    endDate: string,
-  ) {
-    return this.transferService.getBankStatement(req, startDate, endDate);
+  @ApiTags('Transfers')
+  @ApiUnauthorizedResponse({
+    description: `statusCode: 401
+                  message: Unauthorized`,
+  })
+  @ApiOkResponse({ description: 'An array of Accounts Details' })
+  @Get()
+  async requestBankStatement(@Request() req: any) {
+    return this.transferService.getBankStatement(req);
   }
 
   // @Post()
-  // async makeTransfer(target_email, amount)
+  // async makeTransfer(target_email, amount);
 }

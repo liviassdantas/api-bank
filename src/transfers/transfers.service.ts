@@ -14,29 +14,13 @@ export class TransfersService {
     private readonly authService: AuthService,
   ) {}
 
-  async getBankStatement(req, startDate: string, endDate: string) {
-    const startDateParse = new Date(startDate);
-    const endDateParse = new Date(endDate);
+  async getBankStatement(req): Promise<Array<AccountDetails>> {
     const userEmail = await this.authService.getEmailByToken(
       req.headers.authorization,
     );
-    const totalStatement = await this.accountService.findAllByEmail(userEmail);
-    console.log('email decoded:', totalStatement);
-
-    const bankStatementPeriod = Array<AccountDetails>();
-    totalStatement.filter(async (detail) => {
-      while (this.getPeriod(startDateParse, endDateParse, detail.created_at)) {
-        bankStatementPeriod.push(detail);
-      }
+    const totalStatement = await this.accountDetailsModel.find({
+      origin_email: userEmail,
     });
-
-    return bankStatementPeriod;
-  }
-
-  private getPeriod(startDate: Date, endDate: Date, date: Date) {
-    const isBetween =
-      date.getTime() >= startDate.getTime() &&
-      date.getTime() <= endDate.getTime();
-    return isBetween;
+    return totalStatement;
   }
 }

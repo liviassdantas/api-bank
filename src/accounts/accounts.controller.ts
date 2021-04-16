@@ -17,7 +17,7 @@ export class AccountController {
                   message: Unauthorized`,
   })
   @ApiOkResponse({
-    description: `status: 200,
+    description: `
                   message: 'The new account has been created!'`,
   })
   @Post()
