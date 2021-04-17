@@ -29,8 +29,6 @@ export class AuthService {
     const verifiedToken = this.jwtService.verify(authorization, {
       secret: jwtConstants.secret,
     });
-    console.log('auth', authorization);
-    console.log('token id', verifiedToken);
     return verifiedToken.email;
   }
 

@@ -46,6 +46,8 @@ export class TransfersService {
       historic.target_email = target_email;
       historic.created_at = new Date().toISOString();
 
+      await this.accountDetailsModel.create(historic);
+
       return {
         message: `The transfer for ${target_email} was succeffully done!`,
       };
