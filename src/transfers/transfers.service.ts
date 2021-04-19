@@ -16,15 +16,8 @@ export class TransfersService {
     private readonly authService: AuthService,
   ) {}
 
-  private async getLoggedUserEmail(req) {
-    this.userEmail = await this.authService.getEmailByToken(
-      req.headers.authorization,
-    );
-    return this.userEmail;
-  }
-
   async getBankStatement(req): Promise<Array<AccountDetails>> {
-    await this.getLoggedUserEmail(req);
+    await this.authService.getLoggedUserEmail(req);
     const totalStatement = await this.accountDetailsModel.find({
       origin_email: this.userEmail,
     });
@@ -32,7 +25,7 @@ export class TransfersService {
   }
 
   async realizeTransfer(target_email, amount, req) {
-    await this.getLoggedUserEmail(req);
+    await this.authService.getLoggedUserEmail(req);
     const newTransfer = await this.accountService.updateAmount(
       this.userEmail,
       target_email,

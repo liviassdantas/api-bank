@@ -1,6 +1,5 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { exception } from 'console';
 import { AccountService } from '../accounts/accounts.service';
 import { ValidateSecurity } from '../utils/security.util';
 import { jwtConstants } from './constants';
@@ -47,5 +46,10 @@ export class AuthService {
       const { _id, name, email } = accountFound;
       return { id: _id, name, email };
     }
+  }
+
+  async getLoggedUserEmail(req) {
+    const userEmail = await this.getEmailByToken(req.headers.authorization);
+    return userEmail;
   }
 }

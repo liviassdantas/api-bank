@@ -7,6 +7,7 @@ import {
   Body,
 } from '@nestjs/common';
 import {
+  ApiInternalServerErrorResponse,
   ApiOkResponse,
   ApiTags,
   ApiUnauthorizedResponse,
@@ -31,6 +32,20 @@ export class TransfersController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiTags('Transfers')
+  @ApiUnauthorizedResponse({
+    description: `statusCode: 401
+                  message: Unauthorized`,
+  })
+  @ApiOkResponse({
+    description: 'The transfer for [email] was succeffully done!',
+  })
+  @ApiInternalServerErrorResponse({
+    description: `
+    statusCode: '500',
+    message: 'Insufficient funds.',
+    error: 'Internal Server Error'`,
+  })
   @Post()
   async makeTransfer(@Body() body, @Request() req: any) {
     return this.transferService.realizeTransfer(

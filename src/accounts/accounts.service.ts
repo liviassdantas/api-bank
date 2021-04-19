@@ -99,4 +99,34 @@ export class AccountService {
       };
     }
   }
+
+  async disccountWithdraw(originEmail, amount) {
+    try {
+      const verifyOriginBalance = await this.verifyBalance(originEmail, amount);
+
+      if (verifyOriginBalance.status == 'ok') {
+        const account = await this.findByEmail(originEmail);
+
+        const newValue = account.accountBalance - amount;
+        await this.accountmodel.updateOne(
+          { email: originEmail },
+          { accountBalance: newValue },
+        );
+
+        return {
+          status: 'ok',
+        };
+      } else {
+        return {
+          status: 'failed',
+          message: verifyOriginBalance.message,
+        };
+      }
+    } catch (exception) {
+      return {
+        status: 'failed',
+        message: exception.message,
+      };
+    }
+  }
 }
