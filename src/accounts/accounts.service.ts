@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Account } from '../accounts/entities/Account';
+import { Account } from '../accounts/entities/Account.entities';
 import { CreateAccountsDto } from '../accounts/dto/create-accounts.dto';
 import { ValidateSecurity } from '../utils/security.util';
 
@@ -107,7 +107,7 @@ export class AccountService {
       if (verifyOriginBalance.status == 'ok') {
         const account = await this.findByEmail(originEmail);
 
-        const newValue = account.accountBalance - amount;
+        const newValue = account.accountBalance + amount;
         await this.accountmodel.updateOne(
           { email: originEmail },
           { accountBalance: newValue },
